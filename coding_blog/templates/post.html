@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+    <div>
+        <h1>{{ content_post.title }}
+        {% ifequal content_post.author.id user.id %}
+            <span><a href='{% url "edit_post" pk=content_post.pk  %}'>Edit post</a></span>
+        {% endifequal %}</h1>
+        {% if content_post.author %}
+        <span><a href = "{% url 'profile' pk=content_post.author_id  %}">{{ content_post.author}}, </a></span>
+        {% else %}
+             <span>{{ content_post.author}}, </span>
+        {% endif %}
+
+        <span>{{ content_post.published_date|date:"H:i d-m-Y" }}</span>
+        <p>{{ content_post.text|linebreaksbr }}</p>
+
+        {% if username %}
+            <p><a href ='{% url "add_like" post=content_post.pk user=user.id %}'>likes: {{ content_post.likes_counter }}</a></p>
+        {% else %}
+            <p>likes: {{ content_post.likes_counter }}</p>
+        {% endif %}
+
+        {% for comment in content_post.comments %}
+        <span>{{ comment.date|date:"H:i d-m-Y" }}</span>
+                {% if comment.author %}
+                    <span><a href = "{% url 'profile' pk=comment.author_id  %}">{{ comment.author }}</a></span>
+                {% else %}
+                     <span>{{ comment.author }}</span>
+                {% endif %}
+            <p>{{ comment.text|linebreaksbr }}</p>
+        {% endfor %}
+
+
+        {% if username %}
+           <form action="{% url 'add_comment' pk=content_post.pk %}" method="post">
+                {% csrf_token %}
+                {{ content_post.form }}
+               <input type="submit" class="button" value="Send" >
+           </form>
+        {% endif %}
+
+    </div>
+{% endblock %}

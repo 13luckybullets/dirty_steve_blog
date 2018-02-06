@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    {% for post in posts %}
+        <div>
+            <h1><a href="{% url 'get_post' pk=post.pk %}">{{ post.title }}</a></h1>
+            {% if post.author %}
+                <span><a href = "{% url 'profile' pk=post.author_id  %}">{{ post.author }}
+                    </a>, {{ post.published_date|date:"H:i d-m-Y" }}</span>
+            {% else %}
+                    <span>{{ post.author }}, {{ post.published_date|date:"H:i d-m-Y" }}</span>
+            {% endif %}
+
+            <p>{{ post.text|linebreaksbr }}</p>
+            {% if username %}
+                  <span><a href ='{% url "add_like" post=post.pk user=user.id %}'>likes: {{ post.likes_counter }},</a></span>
+            {% else %}
+                <span>likes: {{ post.likes_counter }}, comments: {{ post.comments_counter }}</span>
+            {% endif %}
+
+            <span><a href ="{% url 'get_post' pk=post.pk %}">comments: {{ post.comments_counter }}</a></span>
+        </div>
+    {% endfor %}
+
+    {% with list=posts %}
+        {% include "pagination.html" %}
+    {% endwith %}
+
+{% endblock %}

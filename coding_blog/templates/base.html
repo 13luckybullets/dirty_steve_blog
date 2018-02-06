@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Totally Best Codnig Blog</title>
+        <link rel="stylesheet"
+              href="{{ PORTAL_URL }}{% static 'css/main.css' %}"/>
+        {% block extra_css %}{% endblock extra_css %}
+</head>
+
+<body>
+    <div>
+        <h1><a href = "{% url 'home' %}">Naprimer</a></h1>
+    </div>
+        {% if username %}
+        <span><a href = "{% url 'profile' pk=user.id  %}">{{ username }}</a><button><a href= "{% url 'sign_out' %}">Sign_Out</a></button>
+            <button><a href= "{% url 'add_post'%}">Zapilit PSTO!!11</a></button></span>
+        {% else %}
+            <button><a href="{% url 'sign_in' %}">Sign_in</a></button>
+            <button><a href="{% url 'sign_up' %}">Sign_up</a></button>
+        {% endif %}
+
+    {% block content %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div>
+        <h1>View Profile</h1>
+            <form>
+            <p>Name: {{ data.username}}</p>
+            <p>Email: {{ data.email}}</p>
+            <p>Posts: {{ data.posts}}</p>
+            <p>Comments: {{ data.comments}}</p>
+             <p>Likes that takes: {{ data.like_counter}}</p>
+            {% ifequal username data.username %}
+                <span><a href ='{% url "edit_profile" pk=user.id %}'>Edit profile</a></span>
+            {% endifequal %}
+    </form>
+    </div>
+{% endblock %}
